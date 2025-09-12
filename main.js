@@ -6,7 +6,7 @@ const tabsAndroid = [
   { id: 'ROBLOX', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
 ];
 const tabsWindows = [
-  { id: 'ROBLOX', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://youtube.com }
 ];
 
 // --- Switch Platform ---
