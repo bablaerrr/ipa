@@ -1,12 +1,12 @@
 // --- Tabs Config ---
 const tabsIOS = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Roblox.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
 ];
 const tabsAndroid = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Roblox.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
 ];
 const tabsWindows = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Roblox.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
 ];
 
 // --- Switch Platform ---
