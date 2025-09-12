@@ -41,7 +41,7 @@ async function createTabs() {
   tabsContentContainer.innerHTML = '';
 
   for (const [index, tab] of tabs.entries()) {
-    // Кнопка вкладки
+    // Создаём кнопку вкладки
     const button = document.createElement('button');
     button.id = `btn-tab-${tab.id}`;
     button.className = `tab-button px-4 py-2 ${
@@ -51,14 +51,14 @@ async function createTabs() {
     button.onclick = () => showTab(`tab-${tab.id}`);
     tabsContainer.appendChild(button);
 
-    // Контент вкладки
+    // Создаём контент вкладки
     const tabDiv = document.createElement('div');
     tabDiv.id = `tab-${tab.id}`;
     tabDiv.classList.add('tab-content');
     if (index !== 0) tabDiv.classList.add('hidden');
     tabsContentContainer.appendChild(tabDiv);
 
-    // Загружаем CSV и строим таблицу
+    // Загружаем CSV и формируем таблицу
     try {
       const response = await fetch(tab.csv);
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
@@ -92,10 +92,10 @@ function generateTable(csvText) {
   
   // Заголовок
   html += '<thead><tr>';
-  for (let i = 0; i < rows[0].length - 1; i++) {
+  for (let i = 0; i < rows[0].length - 1; i++) { // Все колонки кроме последней (ссылка)
     html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${rows[0][i]}</th>`;
   }
-  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>';
+  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>'; // колонка кнопки
   html += '</tr></thead><tbody>';
 
   // Данные
@@ -105,13 +105,13 @@ function generateTable(csvText) {
       html += `<td class="px-4 py-2 border-b border-gray-700">${rows[i][j]}</td>`;
     }
 
+    // Кнопка Скачать
     const url = rows[i][rows[i].length - 1];
     html += `<td class="px-4 py-2 border-b border-gray-700">
                <a href="${url}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500">
                  Скачать
                </a>
              </td>`;
-
     html += '</tr>';
   }
 
