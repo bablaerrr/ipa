@@ -2,88 +2,30 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ultimate Roblox Archive</title>
-  <meta name="title" content="Ultimate Roblox Archive">
-  <meta name="description" content="Browse and download historical versions of Roblox for iOS, Android, and Windows.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/">
-  <meta property="og:title" content="Ultimate Roblox Archive">
-  <meta property="og:description" content="Browse and download historical versions of Roblox for iOS, Android, and Windows.">
-  <meta property="og:image" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/logo.png">
-
-  <meta property="twitter:card" content="summary_large_image">
-  <meta property="twitter:url" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/">
-  <meta property="twitter:title" content="Ultimate Roblox Archive">
-  <meta property="twitter:description" content="Browse and download historical versions of Roblox for iOS, Android, and Windows.">
-  <meta property="twitter:image" content="https://yakov5776.github.io/ultimaterobloxmobilearchive/logo.png">
-
-  <link rel="icon" href="./favicon.ico" type="image/x-icon">
-  <meta name="theme-color" content="#B92120">
   <script src="https://cdn.tailwindcss.com"></script>
+  <script src="./main.js" defer></script>
 </head>
-<body class="bg-gray-900 text-white flex flex-col min-h-screen">
-  <main class="container mx-auto p-6 flex-grow">
-    <div class="relative">
-      <div class="flex items-center justify-center space-x-3">
-        <h1 class="text-3xl font-bold text-center">Ultimate Roblox Archive</h1>
-        <img src="./logo.png" alt="Logo" class="h-12 w-12 rounded-lg">
-      </div>
-
-      <!-- Platform buttons -->
-      <div class="flex justify-center items-center space-x-4 mt-3 md:absolute md:top-0 md:right-0 md:mt-0">
-        <span class="text-sm">Currently on:</span>
-        <button id="platform-ios" class="platform-btn flex items-center space-x-2 px-3 py-2 bg-blue-600 text-white rounded-lg transition" onclick="setPlatform('ios')">
-          🍎 <span>iOS</span>
-        </button>
-        <button id="platform-android" class="platform-btn flex items-center space-x-2 px-3 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-500 transition" onclick="setPlatform('android')">
-          🤖 <span>Android</span>
-        </button>
-        <button id="platform-windows" class="platform-btn flex items-center space-x-2 px-3 py-2 bg-gray-700 text-gray-300 rounded-lg hover:bg-gray-500 transition" onclick="setPlatform('windows')">
-          🪟 <span>Windows</span>
-        </button>
-      </div>
+<body class="bg-gray-900 text-white min-h-screen flex flex-col">
+  <header class="p-6 text-center">
+    <h1 class="text-3xl font-bold">Ultimate Roblox Archive</h1>
+    <div class="flex justify-center space-x-4 mt-4">
+      <button id="platform-ios" class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-500"
+              onclick="setPlatform('iOS')">🍎 iOS</button>
+      <button id="platform-android" class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-500"
+              onclick="setPlatform('Android')">🤖 Android</button>
+      <button id="platform-windows" class="px-4 py-2 rounded bg-gray-700 hover:bg-gray-500"
+              onclick="setPlatform('Windows')">🪟 Windows</button>
     </div>
+  </header>
 
-    <h3 class="text-2xl text-center mt-6">Online Roblox Archive Viewer</h3>
-    <h5 class="text-1xl mb-6 text-center">
-      <a target="_blank" href="https://docs.google.com/spreadsheets/d/1qAN8Eh4iPjO1aECiO1tclTXTLKfCka3StReywLJ3A58/" class="text-gray-100 hover:text-white transition-colors">sheet</a> • 
-      <a target="_blank" href="https://discord.gg/H2aVU4hDMh" class="text-gray-100 hover:text-white transition-colors">discord</a> • 
-      <a target="_blank" href="https://github.com/Yakov5776/ultimaterobloxmobilearchive/" class="text-gray-100 hover:text-white transition-colors">github</a> • 
-      <a target="_blank" href="https://ko-fi.com/yakov5776" class="text-gray-100 hover:text-white transition-colors">donate</a>
-    </h5>
-
-    <!-- Tabs -->
+  <main class="flex-grow container mx-auto p-6">
     <div id="tabs" class="flex border-b border-gray-700"></div>
-    <div id="tabsContent" class="p-4 text-center">
-      📱 Welcome! Currently viewing <strong>iOS</strong> archive.
-    </div>
+    <div id="tabsContent" class="mt-4"></div>
   </main>
 
-  <footer class="bg-gray-800 text-center text-gray-300 py-4 mt-12">
-    <p class="text-sm">site made by <a href="https://github.com/Yakov5776" class="text-blue-100 hover:text-white transition-colors">Yakov5776</a>. (<a href="https://ko-fi.com/yakov5776" class="text-blue-100 hover:text-white transition-colors">donate</a>)</p>
-    <p class="text-sm">IPAs and APKs are maintained by SonicGamingTV2019.</p>
+  <footer class="bg-gray-800 text-center text-gray-300 py-4">
+    <p>Archive by <a href="https://github.com/Yakov5776" class="text-blue-400 hover:text-white">Yakov5776</a></p>
   </footer>
-
-  <script>
-    function setPlatform(platform) {
-      // Сбрасываем подсветку кнопок
-      document.querySelectorAll(".platform-btn").forEach(btn => {
-        btn.classList.remove("bg-blue-600", "text-white");
-        btn.classList.add("bg-gray-700", "text-gray-300");
-      });
-
-      // Подсвечиваем активную кнопку
-      let activeBtn = document.getElementById("platform-" + platform);
-      if (activeBtn) {
-        activeBtn.classList.remove("bg-gray-700", "text-gray-300");
-        activeBtn.classList.add("bg-blue-600", "text-white");
-      }
-
-      // Обновляем контент
-      document.getElementById("tabsContent").innerHTML =
-        "📂 Now browsing <strong>" + platform.toUpperCase() + "</strong> archive.";
-    }
-  </script>
 </body>
 </html>

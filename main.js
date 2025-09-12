@@ -1,54 +1,33 @@
-// --- Tabs config ---
-const tabsIOS = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Roblox.csv' }
-];
+// --- Tabs Config ---
+const tabsIOS = [{ id: 'Roblox', name: 'Roblox', csv: './csv/Roblox.csv' }];
+const tabsAndroid = [{ id: 'Roblox', name: 'Roblox', csv: './csv/Android.csv' }];
+const tabsWindows = [{ id: 'Roblox', name: 'Roblox', csv: './csv/Windows.csv' }];
 
-const tabsAndroid = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Android.csv' }
-];
-
-const tabsWindows = [
-  { id: 'Roblox', name: 'Roblox', csv: './csv/Windows.csv' }
-];
-
-// --- Platform selector ---
+// --- Switch Platform ---
 function setPlatform(platform, rebuild = true) {
-  const iosButton = document.getElementById('platform-ios');
-  const androidButton = document.getElementById('platform-android');
-  const windowsButton = document.getElementById('platform-windows');
-
-  // сброс подсветки
-  [iosButton, androidButton, windowsButton].forEach(btn => {
+  ['ios', 'android', 'windows'].forEach(p => {
+    const btn = document.getElementById(`platform-${p}`);
     if (!btn) return;
-    btn.classList.add('bg-gray-700', 'text-gray-300', 'hover:bg-gray-500');
-    btn.classList.remove('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+    btn.classList.remove('bg-blue-600', 'text-white');
+    btn.classList.add('bg-gray-700');
   });
 
-  // подсветка выбранной
-  let activeBtn = document.getElementById('platform-' + platform.toLowerCase());
+  const activeBtn = document.getElementById(`platform-${platform.toLowerCase()}`);
   if (activeBtn) {
-    activeBtn.classList.remove('bg-gray-700', 'text-gray-300', 'hover:bg-gray-500');
-    activeBtn.classList.add('bg-blue-600', 'text-white', 'hover:bg-blue-700');
+    activeBtn.classList.remove('bg-gray-700');
+    activeBtn.classList.add('bg-blue-600', 'text-white');
   }
 
   localStorage.setItem('currentPlatform', platform);
-  console.log(`Platform switched to: ${platform}`);
 
-  if (rebuild) {
-    document.getElementById('tabs').innerHTML = '';
-    document.getElementById('tabsContent').innerHTML = '';
-    createTabs();
-  }
+  if (rebuild) createTabs();
 }
 
-// --- Build tabs depending on platform ---
+// --- Create Tabs ---
 async function createTabs() {
   const platform = localStorage.getItem('currentPlatform') || 'iOS';
-
-  let tabs;
-  if (platform === 'iOS') tabs = tabsIOS;
-  else if (platform === 'Android') tabs = tabsAndroid;
-  else if (platform === 'Windows') tabs = tabsWindows;
+  let tabs = platform === 'iOS' ? tabsIOS :
+             platform === 'Android' ? tabsAndroid : tabsWindows;
 
   const tabsContainer = document.getElementById('tabs');
   const tabsContentContainer = document.getElementById('tabsContent');
@@ -66,25 +45,53 @@ async function createTabs() {
     tabsContainer.appendChild(button);
 
     const tabDiv = document.createElement('div');
-    tabDiv.setAttribute('id', `tab-${tab.id}`);
+    tabDiv.id = `tab-${tab.id}`;
     tabDiv.classList.add('tab-content');
     if (index !== 0) tabDiv.classList.add('hidden');
     tabsContentContainer.appendChild(tabDiv);
 
     try {
-      const content = await fetch(tab.csv).then(r => {
-        if (!r.ok) throw new Error(`Failed to load ${tab.csv}`);
-        return r.text();
-      });
-
-      if (platform === 'Android')
-        tabDiv.innerHTML = generateTableAndroid(content);
-      else
-        tabDiv.innerHTML = generateTable(content);
-
-    } catch (error) {
-      console.error(`Error loading CSV for tab ${tab.id}:`, error);
-      tabDiv.innerHTML = `<p class="text-red-500 text-center">Failed to load data.</p>`;
+      const content = await fetch(tab.csv).then(r => r.text());
+      tabDiv.innerHTML = generateTable(content);
+    } catch (err) {
+      console.error(err);
+      tabDiv.innerHTML = `<p class="text-red-500 text-center">Failed to load ${tab.csv}</p>`;
     }
   }
 }
+
+// --- Show Tab ---
+function showTab(tabId) {
+  document.querySelectorAll('.tab-content').forEach(div => div.classList.add('hidden'));
+  document.getElementById(tabId).classList.remove('hidden');
+
+  document.querySelectorAll('.tab-button').forEach(btn => {
+    btn.classList.remove('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
+    btn.classList.add('bg-gray-900', 'text-gray-400');
+  });
+  document.getElementById(`btn-${tabId}`).classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
+}
+
+// --- CSV → Table ---
+function generateTable(csvText) {
+  const rows = csvText.trim().split('\n').map(r => r.split(','));
+  if (rows.length < 2) return '<p class="text-center text-gray-400">No data</p>';
+
+  let html = '<div class="overflow-x-auto"><table class="min-w-full bg-gray-800 border border-gray-700">';
+  html += '<thead><tr>';
+  rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700">${h}</th>`);
+  html += '</tr></thead><tbody>';
+  for (let i = 1; i < rows.length; i++) {
+    html += '<tr>';
+    rows[i].forEach(cell => html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`);
+    html += '</tr>';
+  }
+  html += '</tbody></table></div>';
+  return html;
+}
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', () => {
+  const savedPlatform = localStorage.getItem('currentPlatform') || 'iOS';
+  setPlatform(savedPlatform, true);
+});
