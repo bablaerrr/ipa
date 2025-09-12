@@ -1,7 +1,13 @@
 // --- Tabs Config ---
-const tabsIOS = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }];
-const tabsAndroid = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }];
-const tabsWindows = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }];
+const tabsIOS = [
+  { id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
+];
+const tabsAndroid = [
+  { id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
+];
+const tabsWindows = [
+  { id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
+];
 
 // --- Switch Platform ---
 function setPlatform(platform, rebuild = true) {
@@ -72,20 +78,37 @@ function showTab(tabId) {
   document.getElementById(`btn-${tabId}`).classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
 }
 
-// --- CSV → Table ---
+// --- CSV → Table с кнопками "Скачать" ---
 function generateTable(csvText) {
   const rows = csvText.trim().split('\n').map(r => r.split(','));
   if (rows.length < 2) return '<p class="text-center text-gray-400">No data</p>';
 
   let html = '<div class="overflow-x-auto"><table class="min-w-full bg-gray-800 border border-gray-700">';
+  
+  // Заголовок
   html += '<thead><tr>';
-  rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700">${h}</th>`);
+  rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${h}</th>`);
   html += '</tr></thead><tbody>';
+
+  // Данные
   for (let i = 1; i < rows.length; i++) {
     html += '<tr>';
-    rows[i].forEach(cell => html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`);
+    rows[i].forEach((cell, idx) => {
+      // Если это последняя колонка и содержит ссылку на файл
+      if (idx === rows[i].length - 1 && cell.startsWith('http')) {
+        html += `<td class="px-4 py-2 border-b border-gray-700">
+                   <a href="${cell}" download
+                      class="px-3 py-1 bg-green-600 hover:bg-green-500 text-white rounded inline-block text-center">
+                     Скачать
+                   </a>
+                 </td>`;
+      } else {
+        html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`;
+      }
+    });
     html += '</tr>';
   }
+
   html += '</tbody></table></div>';
   return html;
 }
