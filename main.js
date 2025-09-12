@@ -41,7 +41,7 @@ async function createTabs() {
   tabsContentContainer.innerHTML = '';
 
   for (const [index, tab] of tabs.entries()) {
-    // Создаём кнопку вкладки
+    // Кнопка вкладки
     const button = document.createElement('button');
     button.id = `btn-tab-${tab.id}`;
     button.className = `tab-button px-4 py-2 ${
@@ -51,14 +51,14 @@ async function createTabs() {
     button.onclick = () => showTab(`tab-${tab.id}`);
     tabsContainer.appendChild(button);
 
-    // Создаём контент вкладки
+    // Контент вкладки
     const tabDiv = document.createElement('div');
     tabDiv.id = `tab-${tab.id}`;
     tabDiv.classList.add('tab-content');
     if (index !== 0) tabDiv.classList.add('hidden');
     tabsContentContainer.appendChild(tabDiv);
 
-    // Загружаем CSV и формируем таблицу
+    // Загружаем CSV и строим таблицу
     try {
       const response = await fetch(tab.csv);
       if (!response.ok) throw new Error(`HTTP error ${response.status}`);
@@ -92,16 +92,19 @@ function generateTable(csvText) {
   
   // Заголовок
   html += '<thead><tr>';
-  rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${h}</th>`);
-  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>'; // колонка кнопок
+  for (let i = 0; i < rows[0].length - 1; i++) {
+    html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${rows[0][i]}</th>`;
+  }
+  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>';
   html += '</tr></thead><tbody>';
 
   // Данные
   for (let i = 1; i < rows.length; i++) {
     html += '<tr>';
-    rows[i].forEach(cell => html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`);
+    for (let j = 0; j < rows[i].length - 1; j++) {
+      html += `<td class="px-4 py-2 border-b border-gray-700">${rows[i][j]}</td>`;
+    }
 
-    // Кнопка Скачать (предполагаем, что последняя колонка CSV содержит ссылку)
     const url = rows[i][rows[i].length - 1];
     html += `<td class="px-4 py-2 border-b border-gray-700">
                <a href="${url}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500">
