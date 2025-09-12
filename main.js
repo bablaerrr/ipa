@@ -41,6 +41,7 @@ async function createTabs() {
   tabsContentContainer.innerHTML = '';
 
   for (const [index, tab] of tabs.entries()) {
+    // Создаём кнопку вкладки
     const button = document.createElement('button');
     button.id = `btn-tab-${tab.id}`;
     button.className = `tab-button px-4 py-2 ${
@@ -50,12 +51,14 @@ async function createTabs() {
     button.onclick = () => showTab(`tab-${tab.id}`);
     tabsContainer.appendChild(button);
 
+    // Создаём контент вкладки
     const tabDiv = document.createElement('div');
     tabDiv.id = `tab-${tab.id}`;
     tabDiv.classList.add('tab-content');
     if (index !== 0) tabDiv.classList.add('hidden');
     tabsContentContainer.appendChild(tabDiv);
 
+    // Загружаем CSV и формируем таблицу
     try {
       const content = await fetch(tab.csv).then(r => r.text());
       tabDiv.innerHTML = generateTable(content);
@@ -90,31 +93,4 @@ function generateTable(csvText) {
   rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${h}</th>`);
   html += '</tr></thead><tbody>';
 
-  // Данные
-  for (let i = 1; i < rows.length; i++) {
-    html += '<tr>';
-    rows[i].forEach((cell, idx) => {
-      // Если это последняя колонка и содержит ссылку на файл
-      if (idx === rows[i].length - 1 && cell.startsWith('http')) {
-        html += `<td class="px-4 py-2 border-b border-gray-700">
-                   <a href="${cell}" download
-                      class="px-3 py-1 bg-green-600 hover:bg-green-500 text-white rounded inline-block text-center">
-                     Скачать
-                   </a>
-                 </td>`;
-      } else {
-        html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`;
-      }
-    });
-    html += '</tr>';
-  }
-
-  html += '</tbody></table></div>';
-  return html;
-}
-
-// --- Init ---
-document.addEventListener('DOMContentLoaded', () => {
-  const savedPlatform = localStorage.getItem('currentPlatform') || 'iOS';
-  setPlatform(savedPlatform, true);
-});
+  // Регулярка д
