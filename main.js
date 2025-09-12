@@ -1,5 +1,5 @@
 const tabs = [
-    { id: 'ROBLOX', name: 'ROBLOX', csv: './csv/ROBLOX.csv' },
+    { id: 'ROBLOX', name: 'ROBLOX', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' },
     { id: 'MobileHD', name: 'ROBLOX Mobile HD', csv: './csv/MobileHD.csv' },
     { id: 'Developer', name: 'Roblox Developer', csv: './csv/Developer.csv' },
     { id: 'HangOutinaDiscoandChat', name: 'Hang Out in a Disco and Chat', csv: './csv/HangOutinaDiscoandChat.csv' },
