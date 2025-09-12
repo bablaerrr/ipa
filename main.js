@@ -1,12 +1,12 @@
 // --- Tabs Config ---
 const tabsIOS = [
-  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
 ];
 const tabsAndroid = [
-  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
 ];
 const tabsWindows = [
-  { id: 'ROBLOX', name: 'Roblox', csv: 'https://github.com/bablaerrr/ipa/raw/refs/heads/main/csv/ROBLOX.csv' }
+  { id: 'ROBLOX', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }
 ];
 
 // --- Switch Platform ---
@@ -60,7 +60,9 @@ async function createTabs() {
 
     // Загружаем CSV и формируем таблицу
     try {
-      const content = await fetch(tab.csv).then(r => r.text());
+      const response = await fetch(tab.csv);
+      if (!response.ok) throw new Error(`HTTP error ${response.status}`);
+      const content = await response.text();
       tabDiv.innerHTML = generateTable(content);
     } catch (err) {
       console.error(err);
@@ -91,6 +93,31 @@ function generateTable(csvText) {
   // Заголовок
   html += '<thead><tr>';
   rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${h}</th>`);
+  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>'; // колонка кнопок
   html += '</tr></thead><tbody>';
 
-  // Регулярка д
+  // Данные
+  for (let i = 1; i < rows.length; i++) {
+    html += '<tr>';
+    rows[i].forEach(cell => html += `<td class="px-4 py-2 border-b border-gray-700">${cell}</td>`);
+
+    // Кнопка Скачать (предполагаем, что последняя колонка CSV содержит ссылку)
+    const url = rows[i][rows[i].length - 1];
+    html += `<td class="px-4 py-2 border-b border-gray-700">
+               <a href="${url}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500">
+                 Скачать
+               </a>
+             </td>`;
+
+    html += '</tr>';
+  }
+
+  html += '</tbody></table></div>';
+  return html;
+}
+
+// --- Init ---
+document.addEventListener('DOMContentLoaded', () => {
+  const savedPlatform = localStorage.getItem('currentPlatform') || 'iOS';
+  setPlatform(savedPlatform, true);
+});
