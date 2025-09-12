@@ -1,7 +1,7 @@
 // --- Tabs Config ---
-const tabsIOS = [{ id: 'Roblox', name: 'Roblox', csv: './csv/ROBLOX.csv' }];
-const tabsAndroid = [{ id: 'Roblox', name: 'Roblox', csv: './csv/Android.csv' }];
-const tabsWindows = [{ id: 'Roblox', name: 'Roblox', csv: './csv/Windows.csv' }];
+const tabsIOS = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }];
+const tabsAndroid = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/ROBLOX.csv' }];
+const tabsWindows = [{ id: 'Roblox', name: 'Roblox', csv: 'https://cdn.jsdelivr.net/gh/bablaerrr/ipa@main/csv/Roblox.csv' }];
 
 // --- Switch Platform ---
 function setPlatform(platform, rebuild = true) {
