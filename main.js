@@ -41,7 +41,7 @@ async function createTabs() {
   tabsContentContainer.innerHTML = '';
 
   for (const [index, tab] of tabs.entries()) {
-    // Создаём кнопку вкладки
+    // Кнопка вкладки
     const button = document.createElement('button');
     button.id = `btn-tab-${tab.id}`;
     button.className = `tab-button px-4 py-2 ${
@@ -51,7 +51,7 @@ async function createTabs() {
     button.onclick = () => showTab(`tab-${tab.id}`);
     tabsContainer.appendChild(button);
 
-    // Создаём контент вкладки
+    // Контент вкладки
     const tabDiv = document.createElement('div');
     tabDiv.id = `tab-${tab.id}`;
     tabDiv.classList.add('tab-content');
@@ -83,7 +83,7 @@ function showTab(tabId) {
   document.getElementById(`btn-${tabId}`).classList.add('bg-gray-800', 'border-b-2', 'border-blue-500', 'text-white');
 }
 
-// --- CSV → Table с кнопками "Скачать" ---
+// --- CSV → Table с кнопками "Скачать" для всех ссылок ---
 function generateTable(csvText) {
   const rows = csvText.trim().split('\n').map(r => r.split(','));
   if (rows.length < 2) return '<p class="text-center text-gray-400">No data</p>';
@@ -92,26 +92,32 @@ function generateTable(csvText) {
   
   // Заголовок
   html += '<thead><tr>';
-  for (let i = 0; i < rows[0].length - 1; i++) { // Все колонки кроме последней (ссылка)
-    html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${rows[0][i]}</th>`;
-  }
-  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>'; // колонка кнопки
+  rows[0].forEach(h => html += `<th class="px-4 py-2 border-b border-gray-700 text-left">${h}</th>`);
+  html += '<th class="px-4 py-2 border-b border-gray-700 text-left">Action</th>';
   html += '</tr></thead><tbody>';
 
   // Данные
   for (let i = 1; i < rows.length; i++) {
     html += '<tr>';
-    for (let j = 0; j < rows[i].length - 1; j++) {
-      html += `<td class="px-4 py-2 border-b border-gray-700">${rows[i][j]}</td>`;
-    }
+    let linkFound = null;
+
+    rows[i].forEach(cell => {
+      const urlMatch = cell.match(/https?:\/\/[^\s]+/);
+      if (urlMatch && !linkFound) linkFound = urlMatch[0]; // берём первую ссылку в строке
+      html += `<td class="px-4 py-2 border-b border-gray-700">${cell.replace(/https?:\/\/[^\s]+/, '')}</td>`;
+    });
 
     // Кнопка Скачать
-    const url = rows[i][rows[i].length - 1];
-    html += `<td class="px-4 py-2 border-b border-gray-700">
-               <a href="${url}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500">
-                 Скачать
-               </a>
-             </td>`;
+    if (linkFound) {
+      html += `<td class="px-4 py-2 border-b border-gray-700">
+                 <a href="${linkFound}" target="_blank" class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-500">
+                   Скачать
+                 </a>
+               </td>`;
+    } else {
+      html += `<td class="px-4 py-2 border-b border-gray-700">—</td>`;
+    }
+
     html += '</tr>';
   }
 
