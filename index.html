@@ -2,11 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ultimate Roblox Archive</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="./main.js" defer></script>
 </head>
 <body class="bg-gray-900 text-white min-h-screen flex flex-col">
+
+  <!-- Header -->
   <header class="p-6 text-center">
     <h1 class="text-3xl font-bold">Ultimate Roblox Archive</h1>
     <div class="flex justify-center space-x-4 mt-4">
@@ -19,13 +22,18 @@
     </div>
   </header>
 
+  <!-- Main Content -->
   <main class="flex-grow container mx-auto p-6">
-    <div id="tabs" class="flex border-b border-gray-700"></div>
-    <div id="tabsContent" class="mt-4"></div>
+    <!-- Вкладки -->
+    <div id="tabs" class="flex border-b border-gray-700 mb-4"></div>
+    <!-- Контент вкладок -->
+    <div id="tabsContent"></div>
   </main>
 
-  <footer class="bg-gray-800 text-center text-gray-300 py-4">
+  <!-- Footer -->
+  <footer class="bg-gray-800 text-center text-gray-300 py-4 mt-auto">
     <p>Archive by <a href="https://github.com/Yakov5776" class="text-blue-400 hover:text-white">Yakov5776</a></p>
   </footer>
+
 </body>
 </html>
